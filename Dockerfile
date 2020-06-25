@@ -19,4 +19,4 @@ WORKDIR $MY_HOME
 
 COPY --from=BUILDER /root/target/*.jar app.jar
 
-ENTRYPOINT ["java", "-jar", "./app.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar"]
