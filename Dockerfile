@@ -6,7 +6,7 @@ LABEL maintainer="xuewenG" \
 WORKDIR /root
 
 RUN set -x \
-    && git clone git@github.com:xuewenG/online-chat-backend.git \
+    && git clone https://github.com/xuewenG/online-chat-backend.git \
     && cd online-chat-backend \
     && mvn package \
     && mv target/*.jar ../app.jar \
