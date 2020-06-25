@@ -1,4 +1,4 @@
-FROM maven:3.6.3-jdk-8
+FROM openjdk:8-jdk-stretch
 
 LABEL maintainer="xuewenG" \
         site="https://github.com/xuewenG/online-chat-backend"
@@ -6,9 +6,6 @@ LABEL maintainer="xuewenG" \
 WORKDIR /root
 
 ARG JAR_FILE=target/*.jar
-
-RUN set -x \
-    && mvn package
 
 COPY ${JAR_FILE} app.jar
 
