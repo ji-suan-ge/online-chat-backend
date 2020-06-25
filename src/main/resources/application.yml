@@ -21,12 +21,12 @@ spring:
     maxPoolPreparedStatementPerConnectionSize: 20
     useGlobalDataSourceStat: true
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=500
-    username: chat
-    password: chat-2019
-    url: jdbc:mysql://47.101.53.141:3306/chat?useUnicode=true&characterEncoding=utf8
+    username: online-chat
+    password: online-chat-0625
+    url: jdbc:mysql://mysql-docker:3306/online-chat?useUnicode=true&characterEncoding=utf8
 
   redis:
-    host: 47.101.53.141
+    host: redis-docker
     port: 6379
     password:
     timeout: 2000ms
