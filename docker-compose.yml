@@ -1,0 +1,13 @@
+version: "3.8"
+networks:
+  my-bridge:
+    external:
+      name: my-bridge
+services:
+  online-chat-backend:
+    build: .
+    image: ixuewen/online-chat-backend
+    container_name: online-chat-backend-docker
+    restart: always
+    networks:
+      - my-bridge
