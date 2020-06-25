@@ -1,16 +1,22 @@
-FROM maven:3.6.3-jdk-8
-
+FROM maven:3.6.3-jdk-8 AS BUILDER
 LABEL maintainer="xuewenG" \
-        site="https://github.com/xuewenG/online-chat-backend"
+    site="https://github.com/xuewenG/online-chat-backend"
 
-WORKDIR /root
+ENV MY_HOME=/root
+RUN mkdir -p $MY_HOME
+WORKDIR $MY_HOME
 
-RUN set -x \
-    && git clone https://github.com/xuewenG/online-chat-backend.git \
-    && cd online-chat-backend \
-    && mvn package \
-    && mv target/*.jar ../app.jar \
-    && cd .. \
-    && rm -rf online-chat-backend
+ADD settings.xml $MY_HOME
+ADD pom.xml $MY_HOME
+RUN mvn dependency:go-offline --settings settings.xml
+ADD . $MY_HOME
+RUN mvn verify --settings settings.xml
+
+FROM openjdk:8-jdk-stretch
+ENV MY_HOME=/root
+RUN mkdir -p $MY_HOME
+WORKDIR $MY_HOME
+
+COPY --from=BUILDER /root/target/*.jar app.jar
 
 ENTRYPOINT ["java", "-jar", "./app.jar"]
