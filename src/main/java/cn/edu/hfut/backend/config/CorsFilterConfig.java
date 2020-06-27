@@ -2,12 +2,14 @@ package cn.edu.hfut.backend.config;
 
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Configuration
 public class CorsFilterConfig {
     @Bean
     public FilterRegistrationBean<CorsFilter> registrationCorsFilterBean() {
