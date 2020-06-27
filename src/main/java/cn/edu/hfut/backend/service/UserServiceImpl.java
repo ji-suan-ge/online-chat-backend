@@ -90,6 +90,6 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void editAvatar(Integer userId, String avatar) {
-        userMapper.editAvatar(userId,avatar);
+        userMapper.editAvatar(userId, avatar);
     }
 }

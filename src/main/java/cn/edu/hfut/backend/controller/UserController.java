@@ -183,7 +183,7 @@ public class UserController {
         User user = (User) httpSession.getAttribute("user");
         Integer userId = user.getId();
 
-        userService.editAvatar(userId,avatar);
+        userService.editAvatar(userId, avatar);
         return ResultUtil.success();
     }
 }

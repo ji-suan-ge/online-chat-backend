@@ -18,6 +18,7 @@ import java.util.UUID;
 public class FileController {
 
     SimpleDateFormat sdf = new SimpleDateFormat("/yyyy/MM/dd/");
+
     @PostMapping("/uploadFile")
     public Response importData(MultipartFile file, HttpServletRequest req, HttpSession httpSession) throws IOException {
         String format = sdf.format(new Date());
@@ -28,7 +29,7 @@ public class FileController {
         }
         String oldName = file.getOriginalFilename();
         String newName = UUID.randomUUID().toString() + oldName.substring(oldName.lastIndexOf("."));
-        file.transferTo(new File(folder,newName));
+        file.transferTo(new File(folder, newName));
         String url = req.getScheme() + "://" + req.getServerName() + ":" + req.getServerPort() + "/upload" + format + newName;
         System.out.println(url);
         return ResultUtil.success(url);

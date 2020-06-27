@@ -1,12 +1,10 @@
 package cn.edu.hfut.backend.dao;
 
-import cn.edu.hfut.backend.dao.provider.FriendProvider;
 import cn.edu.hfut.backend.entity.FriendRequest;
 import cn.edu.hfut.backend.entity.User;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.SelectProvider;
 
 import java.sql.Timestamp;
 import java.util.List;

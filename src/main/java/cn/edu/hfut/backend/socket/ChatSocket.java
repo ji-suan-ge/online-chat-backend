@@ -29,6 +29,9 @@ public class ChatSocket {
     static UserService userService;
 
     static MessageService messageService;
+    private static CopyOnWriteArraySet<ChatSocket> webSocketSet = new CopyOnWriteArraySet<>();
+    private Session session;
+    private Integer userId;
 
     @Autowired
     public void setUserService(UserService userService) {
@@ -39,11 +42,6 @@ public class ChatSocket {
     public void setMessageService(MessageService messageService) {
         ChatSocket.messageService = messageService;
     }
-
-    private static CopyOnWriteArraySet<ChatSocket> webSocketSet = new CopyOnWriteArraySet<>();
-
-    private Session session;
-    private Integer userId;
 
     @OnOpen
     public void onOpen(Session session) {

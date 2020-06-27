@@ -20,6 +20,18 @@ public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    public static String getLog(Exception e, HttpServletRequest httpServletRequest) {
+//        String userID = httpServletRequest.getRemoteUser();
+//        String body = RequestUtil.getBody(httpServletRequest);
+//        String url = httpServletRequest.getRequestURL().toString();
+//        String log = e.getMessage() + "\n" +
+//                "url: " + url + "\n" +
+//                "userID: " + userID + "\n" +
+//                "request body: " + body;
+        String log = "log";
+        return log;
+    }
+
     @ExceptionHandler(Exception.class)
     @ResponseBody
     Response handleException(Exception e, HttpServletRequest httpServletRequest) {
@@ -74,17 +86,5 @@ public class GlobalExceptionHandler {
         LOGGER.error(GlobalExceptionHandler.getLog(e, httpServletRequest));
         LOGGER.error(e.getMessage(), e);
         return ResultUtil.error("权限不足");
-    }
-
-    public static String getLog(Exception e, HttpServletRequest httpServletRequest) {
-//        String userID = httpServletRequest.getRemoteUser();
-//        String body = RequestUtil.getBody(httpServletRequest);
-//        String url = httpServletRequest.getRequestURL().toString();
-//        String log = e.getMessage() + "\n" +
-//                "url: " + url + "\n" +
-//                "userID: " + userID + "\n" +
-//                "request body: " + body;
-        String log = "log";
-        return log;
     }
 }
