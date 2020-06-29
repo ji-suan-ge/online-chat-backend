@@ -5,6 +5,7 @@ import cn.edu.hfut.backend.entity.Group;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Service
@@ -16,5 +17,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<Group> getAllGroup(Integer userId) {
         return groupMapper.getAllGroup(userId);
+    }
+
+    @Override
+    public void addGroup(Integer userId, Integer groupId, Timestamp now) {
+        groupMapper.addGroup(userId, groupId, now);
     }
 }

@@ -1,6 +1,8 @@
 package cn.edu.hfut.backend.controller;
 
 import cn.edu.hfut.backend.constant.code.UserResponseCode;
+import cn.edu.hfut.backend.dto.friend.AddFriendReqBean;
+import cn.edu.hfut.backend.dto.group.AddGroupReqBean;
 import cn.edu.hfut.backend.dto.group.GetAllGroupRespBean;
 import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.Response;
@@ -10,11 +12,14 @@ import cn.edu.hfut.backend.util.ResultUtil;
 import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import javax.validation.constraints.Null;
+import java.sql.Timestamp;
 import java.util.List;
 
 @RestController
@@ -35,6 +40,21 @@ public class GroupController {
 
         GetAllGroupRespBean getAllGroupRespBean = new GetAllGroupRespBean(groupList);
         return ResultUtil.success(getAllGroupRespBean);
+    }
+
+    @PostMapping("addGroup")
+    public Response addGroup(@RequestBody @Valid AddGroupReqBean addGroupReqBean,
+                              HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        if (user == null){
+            return ResultUtil.error(UserResponseCode.NOT_LOGIN,"请先登录！");
+        }
+        Integer userId = user.getId();
+        Integer groupId = addGroupReqBean.getGroupId();
+        Timestamp now = new Timestamp(System.currentTimeMillis());
+        groupService.addGroup(userId, groupId, now);
+
+        return ResultUtil.success();
     }
 
 }
