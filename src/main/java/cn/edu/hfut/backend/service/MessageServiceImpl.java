@@ -62,21 +62,21 @@ public class MessageServiceImpl implements MessageService {
         return messageList;
     }
 
-    @Override
-    public List<GetPulledGroupMessageRespBean.GroupMessage> getIsPullGroupMessage(Integer userId) {
-        List<GetPulledGroupMessageRespBean.GroupMessage> groupMessageList =
-                new ArrayList<>();
-        List<Integer> groupIdList = groupMapper.getAllGroupId(userId);
-        groupIdList.forEach(groupId -> {
-            GetPulledGroupMessageRespBean.GroupMessage groupMessage =
-                    new GetPulledGroupMessageRespBean.GroupMessage();
-            groupMessage.setGroupId(groupId);
-            List<Message> messageList = messageMapper.selectIsPullGroupMessage(userId, groupId);
-            groupMessage.setMessageList(messageList);
-            groupMessageList.add(groupMessage);
-        });
-        return groupMessageList;
-    }
+//    @Override
+//    public List<GetPulledGroupMessageRespBean.GroupMessage> getIsPullGroupMessage(Integer userId) {
+//        List<GetPulledGroupMessageRespBean.GroupMessage> groupMessageList =
+//                new ArrayList<>();
+//        List<Integer> groupIdList = groupMapper.getAllGroupId(userId);
+//        groupIdList.forEach(groupId -> {
+//            GetPulledGroupMessageRespBean.GroupMessage groupMessage =
+//                    new GetPulledGroupMessageRespBean.GroupMessage();
+//            groupMessage.setGroupId(groupId);
+//            List<Message> messageList = messageMapper.selectIsPullGroupMessage(userId, groupId);
+//            groupMessage.setMessageList(messageList);
+//            groupMessageList.add(groupMessage);
+//        });
+//        return groupMessageList;
+//    }
 
     @Override
     public void readAllPrivateMessage(Integer userId, Integer friendId) {

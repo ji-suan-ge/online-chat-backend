@@ -20,7 +20,7 @@ public interface MessageService {
 
     List<Message> getNotPullGroupMessage(Integer userId, Integer groupId);
 
-    List<GetPulledGroupMessageRespBean.GroupMessage> getIsPullGroupMessage(Integer userId);
+//    List<GetPulledGroupMessageRespBean.GroupMessage> getIsPullGroupMessage(Integer userId);
 
     void readAllPrivateMessage(Integer userId, Integer friendId);
 
