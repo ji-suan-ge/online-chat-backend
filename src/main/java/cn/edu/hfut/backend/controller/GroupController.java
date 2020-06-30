@@ -2,10 +2,7 @@ package cn.edu.hfut.backend.controller;
 
 import cn.edu.hfut.backend.constant.code.UserResponseCode;
 import cn.edu.hfut.backend.dto.friend.AddFriendReqBean;
-import cn.edu.hfut.backend.dto.group.AddGroupReqBean;
-import cn.edu.hfut.backend.dto.group.GetAllGroupRespBean;
-import cn.edu.hfut.backend.dto.group.GetGroupUserListReqBean;
-import cn.edu.hfut.backend.dto.group.GetGroupUserListRespBean;
+import cn.edu.hfut.backend.dto.group.*;
 import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.GroupUserList;
 import cn.edu.hfut.backend.entity.Response;
@@ -67,5 +64,14 @@ public class GroupController {
         List<GroupUserList> groupUserList = groupService.getGroupUserList(groupId);
         GetGroupUserListRespBean getGroupUserListRespBean = new GetGroupUserListRespBean(groupUserList);
         return ResultUtil.success(getGroupUserListRespBean);
+    }
+
+    @PostMapping("getGroupByAccount")
+    public Response getGroupByAccount(@RequestBody @Valid GetGroupByAccountReqBean getGroupByAccountReqBean,
+                                      HttpSession httpSession) {
+        Integer groupAccount = getGroupByAccountReqBean.getGroupAccount();
+        List<Group> groupList = groupService.getGroupByAccount(groupAccount);
+        GetGroupByAccountRespBean getGroupByAccountRespBean = new GetGroupByAccountRespBean(groupList);
+        return ResultUtil.success(getGroupByAccountRespBean);
     }
 }

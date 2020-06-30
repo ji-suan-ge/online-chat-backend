@@ -23,6 +23,11 @@ public interface GroupMapper {
     @Select("select user.ID,user.nickname,user.avatar from user where user.ID in (" +
             "select userId from groupuser where groupuser.groupId = #{groupId})")
     List<GroupUserList> getGroupUserList(Integer groupId);
+
+    @Select("select * from `group`" +
+            "where `group`.groupAccount like concat('%',#{groupAccount},'%')")
+    List<Group> getGroupByAccount(Integer groupAccount);
+
 //    @Select("SELECT groupId from groupuser " +
 //            "where userId = #{userId} ")
 //    List<Integer> getAllGroupId(Integer userId);
