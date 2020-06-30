@@ -1,6 +1,7 @@
 package cn.edu.hfut.backend.dao;
 
 import cn.edu.hfut.backend.entity.Group;
+import cn.edu.hfut.backend.entity.GroupUserList;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -19,6 +20,9 @@ public interface GroupMapper {
             "VALUES (#{groupId},#{userId},#{joinTime})")
     void addGroup(Integer userId, Integer groupId, Timestamp joinTime);
 
+    @Select("select user.ID,user.nickname,user.avatar from user where user.ID in (" +
+            "select userId from groupuser where groupuser.groupId = #{groupId})")
+    List<GroupUserList> getGroupUserList(Integer groupId);
 //    @Select("SELECT groupId from groupuser " +
 //            "where userId = #{userId} ")
 //    List<Integer> getAllGroupId(Integer userId);
