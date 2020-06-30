@@ -4,7 +4,10 @@ import cn.edu.hfut.backend.constant.code.UserResponseCode;
 import cn.edu.hfut.backend.dto.friend.AddFriendReqBean;
 import cn.edu.hfut.backend.dto.group.AddGroupReqBean;
 import cn.edu.hfut.backend.dto.group.GetAllGroupRespBean;
+import cn.edu.hfut.backend.dto.group.GetGroupUserListReqBean;
+import cn.edu.hfut.backend.dto.group.GetGroupUserListRespBean;
 import cn.edu.hfut.backend.entity.Group;
+import cn.edu.hfut.backend.entity.GroupUserList;
 import cn.edu.hfut.backend.entity.Response;
 import cn.edu.hfut.backend.entity.User;
 import cn.edu.hfut.backend.service.GroupService;
@@ -57,4 +60,12 @@ public class GroupController {
         return ResultUtil.success();
     }
 
+    @PostMapping("getGroupUserList")
+    public Response getGroupUserList(@RequestBody @Valid GetGroupUserListReqBean getGroupUserListReqBean,
+                                     HttpSession httpSession) {
+        Integer groupId = getGroupUserListReqBean.getGroupId();
+        List<GroupUserList> groupUserList = groupService.getGroupUserList(groupId);
+        GetGroupUserListRespBean getGroupUserListRespBean = new GetGroupUserListRespBean(groupUserList);
+        return ResultUtil.success(getGroupUserListRespBean);
+    }
 }
