@@ -51,14 +51,14 @@ public class MessageController {
         return ResultUtil.success(getRecordRespBean);
     }
 
-    @PostMapping("getIsPullGroupMessage")
-    public Response getIsReadRecordByGroupId(HttpSession httpSession) {
-        User user = (User) httpSession.getAttribute("user");
-        Integer userId = user.getId();
-
-        List<GetPulledGroupMessageRespBean.GroupMessage> messageList = messageService.getIsPullGroupMessage(userId);
-
-        GetPulledGroupMessageRespBean getPulledGroupMessageRespBean = new GetPulledGroupMessageRespBean(messageList);
-        return ResultUtil.success(getPulledGroupMessageRespBean);
-    }
+//    @PostMapping("getIsPullGroupMessage")
+//    public Response getIsReadRecordByGroupId(HttpSession httpSession) {
+//        User user = (User) httpSession.getAttribute("user");
+//        Integer userId = user.getId();
+//
+//        List<GetPulledGroupMessageRespBean.GroupMessage> messageList = messageService.getIsPullGroupMessage(userId);
+//
+//        GetPulledGroupMessageRespBean getPulledGroupMessageRespBean = new GetPulledGroupMessageRespBean(messageList);
+//        return ResultUtil.success(getPulledGroupMessageRespBean);
+//    }
 }
