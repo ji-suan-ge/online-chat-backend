@@ -28,8 +28,8 @@ spring:
   redis:
     host: redis-docker
     port: 6379
-    password:
-    timeout: 2000ms
+    password: redis-2020
+    database: 0
 
   http:
     encoding:
