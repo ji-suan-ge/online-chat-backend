@@ -2,6 +2,7 @@ package cn.edu.hfut.backend.dao;
 
 import cn.edu.hfut.backend.entity.FriendRequest;
 import cn.edu.hfut.backend.entity.User;
+import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
@@ -10,6 +11,7 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
+@CacheNamespace
 public interface FriendMapper {
 
     @Select("SELECT * from user WHERE ID in ( " +

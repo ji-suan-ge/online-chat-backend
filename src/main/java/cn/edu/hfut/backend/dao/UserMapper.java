@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.*;
 import java.sql.Timestamp;
 
 @Mapper
+@CacheNamespace
 public interface UserMapper {
 
     @Select("SELECT * FROM " +

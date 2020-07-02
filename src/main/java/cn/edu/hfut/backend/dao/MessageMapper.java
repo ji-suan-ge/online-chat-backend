@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.*;
 import java.util.List;
 
 @Mapper
+@CacheNamespace
 public interface MessageMapper {
     @Select("SELECT * from message WHERE (userId = #{userId} and friendId = #{friendId} and type = 1) " +
             "or (userId = #{friendId} and friendId = #{userId} and type = 1)")
