@@ -9,7 +9,8 @@ import cn.edu.hfut.backend.entity.FriendRequest;
 import cn.edu.hfut.backend.entity.Message;
 import cn.edu.hfut.backend.service.MessageService;
 import cn.edu.hfut.backend.service.UserService;
-import com.alibaba.fastjson.JSON;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +28,9 @@ import java.util.concurrent.CopyOnWriteArraySet;
 public class ChatSocket {
 
     static UserService userService;
-
     static MessageService messageService;
     private static CopyOnWriteArraySet<ChatSocket> webSocketSet = new CopyOnWriteArraySet<>();
+    private ObjectMapper objectMapper = new ObjectMapper();
     private Session session;
     private Integer userId;
 
@@ -59,10 +60,10 @@ public class ChatSocket {
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) {
+    public void onMessage(String message, Session session) throws JsonProcessingException {
         System.out.println("message:" + message);
         System.out.println("userId: " + this.userId);
-        SocketMessage socketMessage = JSON.parseObject(message, SocketMessage.class);
+        SocketMessage socketMessage = objectMapper.readValue(message, SocketMessage.class);
         System.out.println(socketMessage);
         Integer messageType = socketMessage.getSocketMessageType();
         String data = socketMessage.getData();
@@ -76,8 +77,8 @@ public class ChatSocket {
         }
     }
 
-    private void handleFriendApplyMessage(String data) {
-        PrivateMessage privateMessage = JSON.parseObject(data, PrivateMessage.class);
+    private void handleFriendApplyMessage(String data) throws JsonProcessingException {
+        PrivateMessage privateMessage = objectMapper.readValue(data, PrivateMessage.class);
         Integer friendId = privateMessage.getFriendId();
         String content = privateMessage.getContent();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
@@ -91,21 +92,21 @@ public class ChatSocket {
         FriendRequest friendRequest = messageService.addFriendRequest(this.userId, friendId, content, timestamp);
         SocketMessage socketMessage = new SocketMessage();
         socketMessage.setSocketMessageType(SocketMessageType.FRIEND_APPLY);
-        socketMessage.setData(JSON.toJSONString(friendRequest));
-        String socketMessageString = JSON.toJSONString(socketMessage);
+        socketMessage.setData(objectMapper.writeValueAsString(friendRequest));
+        String socketMessageString = objectMapper.writeValueAsString(socketMessage);
         if (friendSocket != null) {
             friendSocket.session.getAsyncRemote().sendText(socketMessageString);
         }
         session.getAsyncRemote().sendText(socketMessageString);
     }
 
-    private void handleMarkReadMessage(String data) {
-        Integer friendId = JSON.parseObject(data, int.class);
+    private void handleMarkReadMessage(String data) throws JsonProcessingException {
+        Integer friendId = objectMapper.readValue(data, int.class);
         messageService.readAllPrivateMessage(userId, friendId);
     }
 
-    private void handlePrivateMessage(String data) {
-        PrivateMessage privateMessage = JSON.parseObject(data, PrivateMessage.class);
+    private void handlePrivateMessage(String data) throws JsonProcessingException {
+        PrivateMessage privateMessage = objectMapper.readValue(data, PrivateMessage.class);
         Integer friendId = privateMessage.getFriendId();
         String content = privateMessage.getContent();
         Integer messageState = MessageState.NEW_MESSAGE;
@@ -122,9 +123,9 @@ public class ChatSocket {
         Message message = messageService.addMessage(this.userId, friendId, null, messageType,
                 content, timestamp, messageState);
         SocketMessage socketMessage = new SocketMessage();
-        socketMessage.setData(JSON.toJSONString(message));
+        socketMessage.setData(objectMapper.writeValueAsString(message));
         socketMessage.setSocketMessageType(SocketMessageType.PRIVATE_MESSAGE);
-        String socketMessageString = JSON.toJSONString(socketMessage);
+        String socketMessageString = objectMapper.writeValueAsString(socketMessage);
 
         if (friendSocket != null) {
             friendSocket.session.getAsyncRemote().sendText(socketMessageString);
