@@ -1,7 +1,6 @@
 package cn.edu.hfut.backend.controller;
 
 import cn.edu.hfut.backend.constant.code.UserResponseCode;
-import cn.edu.hfut.backend.dto.friend.AddFriendReqBean;
 import cn.edu.hfut.backend.dto.group.*;
 import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.GroupUserList;
@@ -9,7 +8,6 @@ import cn.edu.hfut.backend.entity.Response;
 import cn.edu.hfut.backend.entity.User;
 import cn.edu.hfut.backend.service.GroupService;
 import cn.edu.hfut.backend.util.ResultUtil;
-import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
-import javax.validation.constraints.Null;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -32,8 +29,8 @@ public class GroupController {
     @PostMapping("get")
     public Response getAllGroup(HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        if (user == null){
-            return ResultUtil.error(UserResponseCode.NOT_LOGIN,"请先登录！");
+        if (user == null) {
+            return ResultUtil.error(UserResponseCode.NOT_LOGIN, "请先登录！");
         }
         Integer userId = user.getId();
         List<Group> groupList = groupService.getAllGroup(userId);
@@ -44,10 +41,10 @@ public class GroupController {
 
     @PostMapping("addGroup")
     public Response addGroup(@RequestBody @Valid AddGroupReqBean addGroupReqBean,
-                              HttpSession httpSession) {
+                             HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
-        if (user == null){
-            return ResultUtil.error(UserResponseCode.NOT_LOGIN,"请先登录！");
+        if (user == null) {
+            return ResultUtil.error(UserResponseCode.NOT_LOGIN, "请先登录！");
         }
         Integer userId = user.getId();
         Integer groupId = addGroupReqBean.getGroupId();

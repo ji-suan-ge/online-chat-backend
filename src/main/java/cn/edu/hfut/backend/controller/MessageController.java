@@ -3,7 +3,6 @@ package cn.edu.hfut.backend.controller;
 import cn.edu.hfut.backend.dto.friend.GetPulledMessageRespBean;
 import cn.edu.hfut.backend.dto.friend.GetRecordRespBean;
 import cn.edu.hfut.backend.dto.group.GetGroupMessageReqBean;
-import cn.edu.hfut.backend.dto.group.GetPulledGroupMessageRespBean;
 import cn.edu.hfut.backend.entity.Message;
 import cn.edu.hfut.backend.entity.Response;
 import cn.edu.hfut.backend.entity.User;

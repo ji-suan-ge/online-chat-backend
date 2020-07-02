@@ -4,7 +4,6 @@ import cn.edu.hfut.backend.dao.FriendMapper;
 import cn.edu.hfut.backend.dao.GroupMapper;
 import cn.edu.hfut.backend.dao.MessageMapper;
 import cn.edu.hfut.backend.dto.friend.GetPulledMessageRespBean;
-import cn.edu.hfut.backend.dto.group.GetPulledGroupMessageRespBean;
 import cn.edu.hfut.backend.entity.FriendRequest;
 import cn.edu.hfut.backend.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
