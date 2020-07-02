@@ -1,7 +1,6 @@
 package cn.edu.hfut.backend.service;
 
 import cn.edu.hfut.backend.dto.friend.GetPulledMessageRespBean;
-import cn.edu.hfut.backend.dto.group.GetPulledGroupMessageRespBean;
 import cn.edu.hfut.backend.entity.FriendRequest;
 import cn.edu.hfut.backend.entity.Message;
 

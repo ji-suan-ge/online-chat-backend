@@ -5,7 +5,6 @@ import cn.edu.hfut.backend.entity.GroupUserList;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.List;
 
