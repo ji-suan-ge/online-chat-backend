@@ -4,12 +4,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class GroupUser {
+public class GroupUser implements Serializable {
 
     //id, 群id, 人id, 加入时间, 状态
     private Integer id;
