@@ -14,4 +14,8 @@ public interface GroupService {
     List<GroupUserList> getGroupUserList(Integer groupId);
 
     List<Group> getGroupByAccount(Integer groupAccount);
+
+    void modifyGroup(Integer id, String name, String introduction, String avatar);
+
+    Group getGroupInformById(Integer id);
 }

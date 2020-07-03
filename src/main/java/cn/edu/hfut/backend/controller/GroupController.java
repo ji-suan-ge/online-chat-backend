@@ -26,7 +26,7 @@ public class GroupController {
     @Autowired
     GroupService groupService;
 
-    @PostMapping("get")
+    @PostMapping("getAllGroup")
     public Response getAllGroup(HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (user == null) {
@@ -52,6 +52,27 @@ public class GroupController {
         groupService.addGroup(userId, groupId, now);
 
         return ResultUtil.success();
+    }
+
+    @PostMapping("getGroupInform")
+    public Response getGroupInformation(@RequestBody @Valid GetGroupInformByIdReqBean getGroupInformByIdReqBean) {
+        Integer id = getGroupInformByIdReqBean.getId();
+        Group group = groupService.getGroupInformById(id);
+        GetGroupInformByIdRespBean respBean = new GetGroupInformByIdRespBean();
+        respBean.setGroup(group);
+        return ResultUtil.success(respBean);
+    }
+
+    @PostMapping("modifyGroup")
+    public Response modifyGroup(@RequestBody @Valid ModifyGroupReqBean modifyGroupReqBean) {
+        Integer id = modifyGroupReqBean.getId();
+        String name = modifyGroupReqBean.getName();
+        String introduction = modifyGroupReqBean.getIntroduction();
+        String avatar = modifyGroupReqBean.getAvatar();
+        groupService.modifyGroup(id, name, introduction, avatar);
+        Group group = groupService.getGroupInformById(id);
+        ModifyGroupRespBean modifyGroupRespBean = new ModifyGroupRespBean(group);
+        return ResultUtil.success(modifyGroupRespBean);
     }
 
     @PostMapping("getGroupUserList")

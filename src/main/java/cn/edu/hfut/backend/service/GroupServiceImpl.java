@@ -34,4 +34,14 @@ public class GroupServiceImpl implements GroupService {
     public List<Group> getGroupByAccount(Integer groupAccount) {
         return groupMapper.getGroupByAccount(groupAccount);
     }
+
+    @Override
+    public void modifyGroup(Integer id, String name, String introduction, String avatar) {
+        groupMapper.modifyGroup(id, name, introduction, avatar);
+    }
+
+    @Override
+    public Group getGroupInformById(Integer id) {
+        return groupMapper.getGroupInformById(id);
+    }
 }
