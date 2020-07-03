@@ -39,8 +39,8 @@ public class GroupController {
         return ResultUtil.success(getAllGroupRespBean);
     }
 
-    @PostMapping("addGroup")
-    public Response addGroup(@RequestBody @Valid AddGroupReqBean addGroupReqBean,
+    @PostMapping("joinGroup")
+    public Response joinGroup(@RequestBody @Valid AddGroupReqBean addGroupReqBean,
                              HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (user == null) {
@@ -55,7 +55,8 @@ public class GroupController {
     }
 
     @PostMapping("getGroupInform")
-    public Response getGroupInformation(@RequestBody @Valid GetGroupInformByIdReqBean getGroupInformByIdReqBean) {
+    public Response getGroupInformation(@RequestBody @Valid GetGroupInformByIdReqBean
+                                                    getGroupInformByIdReqBean) {
         Integer id = getGroupInformByIdReqBean.getId();
         Group group = groupService.getGroupInformById(id);
         GetGroupInformByIdRespBean respBean = new GetGroupInformByIdRespBean();
