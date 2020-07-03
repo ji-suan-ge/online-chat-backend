@@ -20,4 +20,17 @@ public class GroupProvider {
             WHERE("id = #{id}");
         }}.toString();
     }
+
+    public String getGroupBy(String groupAccount, Integer id) {
+        return new SQL() {{
+            SELECT("*");
+            FROM("`group`");
+            if (groupAccount != null) {
+                WHERE("groupAccount = #{groupAccount}");
+            }
+            else if (id != null) {
+                WHERE("id = #{id}");
+            }
+        }}.toString();
+    }
 }

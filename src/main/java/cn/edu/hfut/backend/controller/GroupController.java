@@ -19,6 +19,8 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
 
+import static cn.edu.hfut.backend.util.RandomUtil.createGroupAccount;
+
 @RestController
 @RequestMapping("/group")
 public class GroupController {
@@ -54,11 +56,17 @@ public class GroupController {
         return ResultUtil.success();
     }
 
-    @PostMapping("getGroupInform")
-    public Response getGroupInformation(@RequestBody @Valid GetGroupInformByIdReqBean
-                                                    getGroupInformByIdReqBean) {
-        Integer id = getGroupInformByIdReqBean.getId();
-        Group group = groupService.getGroupInformById(id);
+    @PostMapping("createGroup")
+    public Response createGroup(@RequestBody @Valid CreateGroupReqBean createGroupReqBean,
+                                HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+//        if (user == null) {
+//            return ResultUtil.error(UserResponseCode.NOT_LOGIN, "请先登录！");
+//        }
+        String name = createGroupReqBean.getName();
+        String introduction = createGroupReqBean.getIntroduction();
+        String avatar = "https://cn.bing.com/th?id=OIP.-jKw2EUCwR3IoLPC5Qbw3gAAAA&pid=Api&rs=1";
+        Group group = groupService.createGroup(name, avatar, introduction, user);
         GetGroupInformByIdRespBean respBean = new GetGroupInformByIdRespBean();
         respBean.setGroup(group);
         return ResultUtil.success(respBean);
@@ -77,8 +85,7 @@ public class GroupController {
     }
 
     @PostMapping("getGroupUserList")
-    public Response getGroupUserList(@RequestBody @Valid GetGroupUserListReqBean getGroupUserListReqBean,
-                                     HttpSession httpSession) {
+    public Response getGroupUserList(@RequestBody @Valid GetGroupUserListReqBean getGroupUserListReqBean) {
         Integer groupId = getGroupUserListReqBean.getGroupId();
         List<GroupUserList> groupUserList = groupService.getGroupUserList(groupId);
         GetGroupUserListRespBean getGroupUserListRespBean = new GetGroupUserListRespBean(groupUserList);
@@ -86,8 +93,7 @@ public class GroupController {
     }
 
     @PostMapping("getGroupByAccount")
-    public Response getGroupByAccount(@RequestBody @Valid GetGroupByAccountReqBean getGroupByAccountReqBean,
-                                      HttpSession httpSession) {
+    public Response getGroupByAccount(@RequestBody @Valid GetGroupByAccountReqBean getGroupByAccountReqBean) {
         Integer groupAccount = getGroupByAccountReqBean.getGroupAccount();
         List<Group> groupList = groupService.getGroupByAccount(groupAccount);
         GetGroupByAccountRespBean getGroupByAccountRespBean = new GetGroupByAccountRespBean(groupList);

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetGroupByAccountReqBean {
-    private Integer groupAccount;
+public class CreateGroupReqBean {
+    private String name;
+    private String introduction;
 }

@@ -4,10 +4,7 @@ import cn.edu.hfut.backend.dao.provider.GroupProvider;
 import cn.edu.hfut.backend.dao.provider.UserProvider;
 import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.GroupUserList;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 
 import java.sql.Timestamp;
 import java.util.List;
@@ -35,8 +32,15 @@ public interface GroupMapper {
     @UpdateProvider(type = GroupProvider.class, method = "updateGroupById")
     void modifyGroup(Integer id, String name, String introduction, String avatar);
 
-    @Select("select * from `group` where `group`.id = #{id}")
-    Group getGroupInformById(Integer id);
+//    @Select("select * from `group` where `group`.id = #{id}")
+//    Group getGroupInformById(Integer id);
+
+    @SelectProvider(type = GroupProvider.class, method = "getGroupBy")
+    Group getGroupInformBy(String groupAccount, Integer id);
+
+    @Insert("INSERT INTO `group`(name,groupAccount,`introduction`,avatar,state) " +
+            "VALUES(#{name},#{account},#{introduction},#{avatar},1)")
+    void createGroup(String name,String account, String avatar, String introduction);
 
 
 //    @Select("SELECT groupId from groupuser " +
