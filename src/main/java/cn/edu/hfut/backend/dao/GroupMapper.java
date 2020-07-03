@@ -2,7 +2,6 @@ package cn.edu.hfut.backend.dao;
 
 import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.GroupUserList;
-import org.apache.ibatis.annotations.CacheNamespace;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 
@@ -10,7 +9,6 @@ import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
-@CacheNamespace
 public interface GroupMapper {
 
     @Select("SELECT * from `group` where ID IN " +

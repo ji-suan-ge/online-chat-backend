@@ -43,7 +43,3 @@ logging:
   level:
     root: INFO
     cn.edu.hfut.backend: DEBUG
-
-mybatis:
-  configuration:
-    cache-enabled: true
