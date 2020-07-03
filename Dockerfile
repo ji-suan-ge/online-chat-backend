@@ -10,7 +10,7 @@ ADD settings.xml $MY_HOME
 ADD pom.xml $MY_HOME
 RUN mvn dependency:go-offline --settings settings.xml
 ADD . $MY_HOME
-RUN mvn verify --settings settings.xml
+RUN mvn clean verify -DskipTests --settings settings.xml
 
 FROM openjdk:8-jdk-stretch
 ENV MY_HOME=/root
