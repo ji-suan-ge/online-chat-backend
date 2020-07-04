@@ -1,163 +1,87 @@
 package cn.edu.hfut.backend.socket;
 
-import cn.edu.hfut.backend.constant.message.MessageState;
-import cn.edu.hfut.backend.constant.message.MessageType;
 import cn.edu.hfut.backend.constant.socket.SocketMessageType;
-import cn.edu.hfut.backend.dto.socket.PrivateMessage;
 import cn.edu.hfut.backend.dto.socket.SocketMessage;
-import cn.edu.hfut.backend.entity.FriendRequest;
-import cn.edu.hfut.backend.entity.Message;
-import cn.edu.hfut.backend.service.MessageService;
-import cn.edu.hfut.backend.service.UserService;
+import cn.edu.hfut.backend.socket.handler.SocketMessageHandler;
+import cn.edu.hfut.backend.socket.handler.impl.ApplyFriendHandler;
+import cn.edu.hfut.backend.socket.handler.impl.GroupMessageHandler;
+import cn.edu.hfut.backend.socket.handler.impl.MarkReadMessageHandler;
+import cn.edu.hfut.backend.socket.handler.impl.PrivateMessageHandler;
+import cn.edu.hfut.backend.util.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
+import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
-import java.io.IOException;
-import java.sql.Timestamp;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArraySet;
+import java.util.concurrent.ConcurrentHashMap;
 
 
-@ServerEndpoint("/chatSocket")
+@Slf4j
 @Component
+@ServerEndpoint("/chatSocket/{userId}")
 public class ChatSocket {
 
-    static UserService userService;
-    static MessageService messageService;
-    private static CopyOnWriteArraySet<ChatSocket> webSocketSet = new CopyOnWriteArraySet<>();
-    private ObjectMapper objectMapper = new ObjectMapper();
+    private static ConcurrentHashMap<Integer, ChatSocket> chatSockets = new ConcurrentHashMap<>();
     private Session session;
     private Integer userId;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        ChatSocket.userService = userService;
-    }
-
-    @Autowired
-    public void setMessageService(MessageService messageService) {
-        ChatSocket.messageService = messageService;
-    }
-
     @OnOpen
-    public void onOpen(Session session) {
+    public void onOpen(Session session, @PathParam(value = "userId") Integer userId) {
         this.session = session;
-        webSocketSet.add(this);
-        Map<String, List<String>> paras = session.getRequestParameterMap();
-        this.userId = Integer.parseInt(paras.get("token").get(0));
-        System.out.println(userId);
+        this.userId = userId;
+        chatSockets.put(userId, this);
+        log.debug("websocket connection established, userId: " + this.userId);
     }
 
     @OnClose
     public void onClose() {
-        webSocketSet.remove(this);
-        System.out.println("logout");
+        chatSockets.remove(this.userId);
+        log.debug("websocket connection destroyed, userId: " + this.userId);
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) throws JsonProcessingException {
-        System.out.println("message:" + message);
-        System.out.println("userId: " + this.userId);
-        SocketMessage socketMessage = objectMapper.readValue(message, SocketMessage.class);
-        System.out.println(socketMessage);
+    public void onMessage(String message) throws JsonProcessingException {
+        log.debug("=======================================================================");
+        log.debug("userId: " + this.userId);
+        log.debug("message:" + message);
+        // 解析 socket 消息
+        SocketMessage socketMessage = JsonUtil.parse(message, SocketMessage.class);
         Integer messageType = socketMessage.getSocketMessageType();
         String data = socketMessage.getData();
-
+        // 判断 socket 事件类型
+        SocketMessageHandler socketMessageHandler = null;
         if (SocketMessageType.PRIVATE_MESSAGE.equals(messageType)) {
-            handlePrivateMessage(data);
+            socketMessageHandler = new PrivateMessageHandler();
         } else if (SocketMessageType.MARK_READ_MESSAGE.equals(messageType)) {
-            handleMarkReadMessage(data);
+            socketMessageHandler = new MarkReadMessageHandler();
         } else if (SocketMessageType.FRIEND_APPLY.equals(messageType)) {
-            handleFriendApplyMessage(data);
+            socketMessageHandler = new ApplyFriendHandler();
+        } else if (SocketMessageType.GROUP_MESSAGE.equals(messageType)) {
+            socketMessageHandler = new GroupMessageHandler();
+        } else {
+            // 忽略不支持的事件类型
+            return;
         }
-    }
-
-    private void handleFriendApplyMessage(String data) throws JsonProcessingException {
-        PrivateMessage privateMessage = objectMapper.readValue(data, PrivateMessage.class);
-        Integer friendId = privateMessage.getFriendId();
-        String content = privateMessage.getContent();
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-        ChatSocket friendSocket = null;
-        for (ChatSocket chatSocket : webSocketSet) {
-            if (chatSocket.userId.equals(friendId)) {
-                friendSocket = chatSocket;
-            }
-        }
-        FriendRequest friendRequest = messageService.addFriendRequest(this.userId, friendId, content, timestamp);
-        SocketMessage socketMessage = new SocketMessage();
-        socketMessage.setSocketMessageType(SocketMessageType.FRIEND_APPLY);
-        socketMessage.setData(objectMapper.writeValueAsString(friendRequest));
-        String socketMessageString = objectMapper.writeValueAsString(socketMessage);
-        if (friendSocket != null) {
-            friendSocket.session.getAsyncRemote().sendText(socketMessageString);
-        }
-        session.getAsyncRemote().sendText(socketMessageString);
-    }
-
-    private void handleMarkReadMessage(String data) throws JsonProcessingException {
-        Integer friendId = objectMapper.readValue(data, int.class);
-        messageService.readAllPrivateMessage(userId, friendId);
-    }
-
-    private void handlePrivateMessage(String data) throws JsonProcessingException {
-        PrivateMessage privateMessage = objectMapper.readValue(data, PrivateMessage.class);
-        Integer friendId = privateMessage.getFriendId();
-        String content = privateMessage.getContent();
-        Integer messageState = MessageState.NEW_MESSAGE;
-        Integer messageType = MessageType.PRIVATE_MESSAGE;
-        Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-
-        ChatSocket friendSocket = null;
-        for (ChatSocket chatSocket : webSocketSet) {
-            if (chatSocket.userId.equals(friendId)) {
-                friendSocket = chatSocket;
-            }
-        }
-
-        Message message = messageService.addMessage(this.userId, friendId, null, messageType,
-                content, timestamp, messageState);
-        SocketMessage socketMessage = new SocketMessage();
-        socketMessage.setData(objectMapper.writeValueAsString(message));
-        socketMessage.setSocketMessageType(SocketMessageType.PRIVATE_MESSAGE);
-        String socketMessageString = objectMapper.writeValueAsString(socketMessage);
-
-        if (friendSocket != null) {
-            friendSocket.session.getAsyncRemote().sendText(socketMessageString);
-        }
-        session.getAsyncRemote().sendText(socketMessageString);
-    }
-
-    public void sendMessage(String message) throws IOException {
-        this.session.getAsyncRemote().sendText(message);
+        // 处理 socket 事件
+        socketMessageHandler.handle(this, data);
     }
 
     @OnError
-    public void onError(Session session, Throwable error) {
+    public void onError(Throwable error) {
         error.printStackTrace();
     }
 
-//    /**
-//     * 群发自定义消息
-//     */
-//    public static void sendInfo(String message, @PathParam("sid") String sid) throws IOException {
-////        log.info("推送消息到窗口" + sid + "，推送内容:" + message);
-//        for (ChatSocketServer item : webSocketSet) {
-//            try {
-//                //这里可以设定只推送给这个sid的，为null则全部推送
-//                if (sid == null) {
-//                    item.sendMessage(message);
-//                } else if (item.sid.equals(sid)) {
-//                    item.sendMessage(message);
-//                }
-//            } catch (IOException e) {
-//                continue;
-//            }
-//        }
-//    }
+    public Integer getUserId() {
+        return this.userId;
+    }
+
+    public Session getSession() {
+        return this.session;
+    }
+
+    public ChatSocket getChatSocketByUserId(Integer userId) {
+        return ChatSocket.chatSockets.get(userId);
+    }
 }
