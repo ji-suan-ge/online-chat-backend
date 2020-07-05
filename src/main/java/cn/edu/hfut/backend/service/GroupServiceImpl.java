@@ -55,7 +55,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<GroupUserList> getGroupUserList(Integer groupId) {
+    public List<User> getGroupUserList(Integer groupId) {
         return groupMapper.getGroupUserList(groupId);
     }
 

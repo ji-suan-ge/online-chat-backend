@@ -6,6 +6,7 @@ import cn.edu.hfut.backend.dto.socket.ChatMessage;
 import cn.edu.hfut.backend.dto.socket.SocketMessage;
 import cn.edu.hfut.backend.entity.GroupUserList;
 import cn.edu.hfut.backend.entity.Message;
+import cn.edu.hfut.backend.entity.User;
 import cn.edu.hfut.backend.service.GroupService;
 import cn.edu.hfut.backend.service.MessageService;
 import cn.edu.hfut.backend.socket.ChatSocket;
@@ -56,10 +57,10 @@ public class GroupMessageHandler implements SocketMessageHandler {
         socketMessage.setData(JsonUtil.stringify(message));
         socketMessage.setSocketMessageType(SocketMessageType.GROUP_MESSAGE);
         String socketMessageString = JsonUtil.stringify(socketMessage);
-        List<GroupUserList> users = groupService.getGroupUserList(groupId);
+        List<User> users = groupService.getGroupUserList(groupId);
         // 将消息发送给群友
         users.forEach(user -> {
-            Integer userId = user.getID();
+            Integer userId = user.getId();
             ChatSocket userSocket = chatSocket.getChatSocketByUserId(userId);
             if (userSocket != null) {
                 userSocket.getSession().getAsyncRemote().sendText(socketMessageString);
