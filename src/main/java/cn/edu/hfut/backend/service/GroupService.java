@@ -24,4 +24,8 @@ public interface GroupService {
     Group createGroup(String name, String avatar, String introduction, User user);
 
     void updateLastReadMessageId(Integer userId, Integer groupId, Integer messageId);
+
+    List<Integer> getAllGroupNum(Integer userId);
+
+    List<User> getUserList(Integer groupId);
 }

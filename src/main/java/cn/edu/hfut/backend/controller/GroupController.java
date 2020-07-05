@@ -2,10 +2,7 @@ package cn.edu.hfut.backend.controller;
 
 import cn.edu.hfut.backend.constant.code.UserResponseCode;
 import cn.edu.hfut.backend.dto.group.*;
-import cn.edu.hfut.backend.entity.Group;
-import cn.edu.hfut.backend.entity.GroupUserList;
-import cn.edu.hfut.backend.entity.Response;
-import cn.edu.hfut.backend.entity.User;
+import cn.edu.hfut.backend.entity.*;
 import cn.edu.hfut.backend.service.GroupService;
 import cn.edu.hfut.backend.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -96,5 +94,21 @@ public class GroupController {
         List<Group> groupList = groupService.getGroupByAccount(groupAccount);
         GetGroupByAccountRespBean getGroupByAccountRespBean = new GetGroupByAccountRespBean(groupList);
         return ResultUtil.success(getGroupByAccountRespBean);
+    }
+
+    @PostMapping("getAllGroupUser")
+    public Response getAllGroupUser(@RequestBody @Valid GetAllGroupUserReqBean getAllGroupUserReqBean) {
+        Integer userId = getAllGroupUserReqBean.getUserId();
+        List<Integer> groupIdList = groupService.getAllGroupNum(userId);
+        List<GroupAllUserList> allGroupUserList = new ArrayList<>();
+        for(Integer groupId : groupIdList) {
+            GroupAllUserList allUserList = new GroupAllUserList();
+            List<User> userList = groupService.getUserList(groupId);
+            allUserList.setGroupId(groupId);
+            allUserList.setUserList(userList);
+            allGroupUserList.add(allUserList);
+        }
+        GetAllGroupUserRespBean getAllGroupUserRespBean = new GetAllGroupUserRespBean(allGroupUserList);
+        return ResultUtil.success(getAllGroupUserRespBean);
     }
 }

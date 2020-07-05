@@ -3,6 +3,7 @@ package cn.edu.hfut.backend.dao;
 import cn.edu.hfut.backend.dao.provider.GroupProvider;
 import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.GroupUserList;
+import cn.edu.hfut.backend.entity.User;
 import org.apache.ibatis.annotations.*;
 
 import java.sql.Timestamp;
@@ -50,6 +51,13 @@ public interface GroupMapper {
             "( SELECT groupId  FROM `groupuser` WHERE userId = #{userId})")
     List<Integer> getAllGroupId(Integer userId);
 
+    @Select("SELECT groupuser.groupId FROM `groupuser`" +
+            "WHERE userId = #{userId}")
+    List<Integer> getAllGroupNum(Integer userId);
+
+    @Select("SELECT * FROM `user`" +
+            "WHERE ID in (SELECT groupuser.userId From `groupuser` WHERE groupuser.groupId = #{groupId})")
+    List<User> getUserList(Integer groupId);
 
 //    @Select("SELECT groupId from groupuser " +
 //            "where userId = #{userId} ")
