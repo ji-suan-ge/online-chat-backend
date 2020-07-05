@@ -9,12 +9,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 @Component
-public class MarkReadMessageHandler implements SocketMessageHandler {
+public class MarkPrivateMessageReadHandler implements SocketMessageHandler {
     private static MessageService messageService;
 
     @Autowired
     public void setMessageService(MessageService messageService) {
-        MarkReadMessageHandler.messageService = messageService;
+        MarkPrivateMessageReadHandler.messageService = messageService;
     }
 
     @Override

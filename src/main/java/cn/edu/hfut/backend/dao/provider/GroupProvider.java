@@ -2,8 +2,6 @@ package cn.edu.hfut.backend.dao.provider;
 
 import org.apache.ibatis.jdbc.SQL;
 
-import java.sql.Timestamp;
-
 public class GroupProvider {
     public String updateGroupById(Integer id, String name, String introduction, String avatar) {
         return new SQL() {{
@@ -27,8 +25,7 @@ public class GroupProvider {
             FROM("`group`");
             if (groupAccount != null) {
                 WHERE("groupAccount = #{groupAccount}");
-            }
-            else if (id != null) {
+            } else if (id != null) {
                 WHERE("id = #{id}");
             }
         }}.toString();

@@ -19,8 +19,6 @@ import javax.validation.Valid;
 import java.sql.Timestamp;
 import java.util.List;
 
-import static cn.edu.hfut.backend.util.RandomUtil.createGroupAccount;
-
 @RestController
 @RequestMapping("/group")
 public class GroupController {
@@ -43,7 +41,7 @@ public class GroupController {
 
     @PostMapping("joinGroup")
     public Response joinGroup(@RequestBody @Valid AddGroupReqBean addGroupReqBean,
-                             HttpSession httpSession) {
+                              HttpSession httpSession) {
         User user = (User) httpSession.getAttribute("user");
         if (user == null) {
             return ResultUtil.error(UserResponseCode.NOT_LOGIN, "请先登录！");
