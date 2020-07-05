@@ -3,7 +3,7 @@ package cn.edu.hfut.backend.socket.handler.impl;
 import cn.edu.hfut.backend.constant.message.MessageState;
 import cn.edu.hfut.backend.constant.message.MessageType;
 import cn.edu.hfut.backend.constant.socket.SocketMessageType;
-import cn.edu.hfut.backend.dto.socket.PrivateMessage;
+import cn.edu.hfut.backend.dto.socket.ChatMessage;
 import cn.edu.hfut.backend.dto.socket.SocketMessage;
 import cn.edu.hfut.backend.entity.Message;
 import cn.edu.hfut.backend.service.MessageService;
@@ -27,10 +27,10 @@ public class PrivateMessageHandler implements SocketMessageHandler {
 
     @Override
     public void handle(ChatSocket chatSocket, String data) throws JsonProcessingException {
-        // 解析 privateMessage
-        PrivateMessage privateMessage = JsonUtil.parse(data, PrivateMessage.class);
-        Integer friendId = privateMessage.getFriendId();
-        String content = privateMessage.getContent();
+        // 解析 chatMessage
+        ChatMessage chatMessage = JsonUtil.parse(data, ChatMessage.class);
+        Integer friendId = chatMessage.getToId();
+        String content = chatMessage.getContent();
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         // 保存消息记录
         Message message = messageService.addMessage(
@@ -42,7 +42,7 @@ public class PrivateMessageHandler implements SocketMessageHandler {
                 timestamp,
                 MessageState.NEW_MESSAGE
         );
-        // 构造响应的 socketMessage
+        // 构造响应的 socket 消息
         SocketMessage socketMessage = new SocketMessage();
         socketMessage.setData(JsonUtil.stringify(message));
         socketMessage.setSocketMessageType(SocketMessageType.PRIVATE_MESSAGE);
