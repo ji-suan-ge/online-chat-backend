@@ -94,4 +94,14 @@ public class GroupServiceImpl implements GroupService {
     public void updateLastReadMessageId(Integer userId, Integer groupId, Integer messageId) {
         groupMapper.updateLastReadMessageId(userId, groupId, messageId);
     }
+
+    @Override
+    public List<Integer> getAllGroupNum(Integer userId) {
+        return groupMapper.getAllGroupNum(userId);
+    }
+
+    @Override
+    public List<User> getUserList(Integer groupId) {
+        return groupMapper.getUserList(groupId);
+    }
 }
