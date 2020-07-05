@@ -3,6 +3,7 @@ package cn.edu.hfut.backend.controller;
 import cn.edu.hfut.backend.dto.friend.GetPulledMessageRespBean;
 import cn.edu.hfut.backend.dto.friend.GetRecordRespBean;
 import cn.edu.hfut.backend.dto.group.GetGroupMessageReqBean;
+import cn.edu.hfut.backend.dto.group.GetGroupMessageRespBean;
 import cn.edu.hfut.backend.entity.Message;
 import cn.edu.hfut.backend.entity.Response;
 import cn.edu.hfut.backend.entity.User;
@@ -48,6 +49,18 @@ public class MessageController {
 
         GetRecordRespBean getRecordRespBean = new GetRecordRespBean(messageList);
         return ResultUtil.success(getRecordRespBean);
+    }
+
+    @PostMapping("getAllGroupMessage")
+    public Response getAllGroupMessage(HttpSession httpSession) {
+        User user = (User) httpSession.getAttribute("user");
+        Integer userId = user.getId();
+
+        List<GetGroupMessageRespBean.GroupMessage> messageList =
+                messageService.getAllGroupMessage(userId);
+
+        GetGroupMessageRespBean getGroupMessageRespBean = new GetGroupMessageRespBean(messageList);
+        return ResultUtil.success(getGroupMessageRespBean);
     }
 
 //    @PostMapping("getIsPullGroupMessage")

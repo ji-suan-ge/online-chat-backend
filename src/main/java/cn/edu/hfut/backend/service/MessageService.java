@@ -1,6 +1,7 @@
 package cn.edu.hfut.backend.service;
 
 import cn.edu.hfut.backend.dto.friend.GetPulledMessageRespBean;
+import cn.edu.hfut.backend.dto.group.GetGroupMessageRespBean;
 import cn.edu.hfut.backend.entity.FriendRequest;
 import cn.edu.hfut.backend.entity.Message;
 
@@ -26,4 +27,6 @@ public interface MessageService {
     void updateFriendRequestState(Integer requestId);
 
     FriendRequest addFriendRequest(Integer userId, Integer friendId, String content, Timestamp timestamp);
+
+    List<GetGroupMessageRespBean.GroupMessage> getAllGroupMessage(Integer userId);
 }
