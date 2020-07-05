@@ -61,7 +61,9 @@ public class GroupMessageHandler implements SocketMessageHandler {
         users.forEach(user -> {
             Integer userId = user.getID();
             ChatSocket userSocket = chatSocket.getChatSocketByUserId(userId);
-            userSocket.getSession().getAsyncRemote().sendText(socketMessageString);
+            if (userSocket != null) {
+                userSocket.getSession().getAsyncRemote().sendText(socketMessageString);
+            }
         });
     }
 }
