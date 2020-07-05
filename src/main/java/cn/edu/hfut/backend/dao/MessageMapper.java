@@ -13,7 +13,7 @@ public interface MessageMapper {
             "or (userId = #{friendId} and friendId = #{userId} and type = 1)")
     List<Message> selectMessage(Integer userId, Integer friendId);
 
-    @Select("SELECT * from message WHERE (userId = #{userId} and groupId = #{groupId} and type = 2)")
+    @Select("SELECT * from message WHERE groupId = #{groupId} and type = 2")
     List<Message> selectGroupMessage(Integer userId, Integer groupId);
 
     @Select("select  * from `message` WHERE groupId = #{groupId} Order By message.time  Desc LIMIT 1 " )
