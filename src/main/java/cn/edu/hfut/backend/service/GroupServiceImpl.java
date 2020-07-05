@@ -52,7 +52,7 @@ public class GroupServiceImpl implements GroupService {
     public Group createGroup(String name, String avatar, String introduction, User user) {
         String groupAccount = createGroupAccount();
         Integer userId = user.getId();
-        while (groupMapper.getGroupInformBy(groupAccount, null) != null){
+        while (groupMapper.getGroupInformBy(groupAccount, null) != null) {
             groupAccount = createGroupAccount();
         }
         groupMapper.createGroup(name, groupAccount, avatar, introduction);
@@ -62,5 +62,10 @@ public class GroupServiceImpl implements GroupService {
         Timestamp now = new Timestamp(System.currentTimeMillis());
         groupMapper.addGroup(userId, group.getId(), now);
         return group;
+    }
+
+    @Override
+    public void updateLastReadMessageId(Integer userId, Integer groupId, Integer messageId) {
+        groupMapper.updateLastReadMessageId(userId, groupId, messageId);
     }
 }

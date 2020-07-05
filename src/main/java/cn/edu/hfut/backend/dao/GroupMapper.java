@@ -1,7 +1,6 @@
 package cn.edu.hfut.backend.dao;
 
 import cn.edu.hfut.backend.dao.provider.GroupProvider;
-import cn.edu.hfut.backend.dao.provider.UserProvider;
 import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.GroupUserList;
 import org.apache.ibatis.annotations.*;
@@ -19,6 +18,11 @@ public interface GroupMapper {
     @Select("INSERT INTO groupuser(groupId,userId,joinTime) " +
             "VALUES (#{groupId},#{userId},#{joinTime})")
     void addGroup(Integer userId, Integer groupId, Timestamp joinTime);
+
+    @Update("UPDATE groupuser " +
+            "SET lastMessageId = #{messageId} " +
+            "WHERE groupId = #{groupId} and userId = #{userId}")
+    void updateLastReadMessageId(Integer userId, Integer groupId, Integer messageId);
 
     @Select("select user.ID,user.nickname,user.avatar from user where user.ID in (" +
             "select userId from groupuser where groupuser.groupId = #{groupId})")
@@ -40,7 +44,7 @@ public interface GroupMapper {
 
     @Insert("INSERT INTO `group`(name,groupAccount,`introduction`,avatar,state) " +
             "VALUES(#{name},#{account},#{introduction},#{avatar},1)")
-    void createGroup(String name,String account, String avatar, String introduction);
+    void createGroup(String name, String account, String avatar, String introduction);
 
 
 //    @Select("SELECT groupId from groupuser " +

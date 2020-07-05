@@ -3,10 +3,7 @@ package cn.edu.hfut.backend.socket;
 import cn.edu.hfut.backend.constant.socket.SocketMessageType;
 import cn.edu.hfut.backend.dto.socket.SocketMessage;
 import cn.edu.hfut.backend.socket.handler.SocketMessageHandler;
-import cn.edu.hfut.backend.socket.handler.impl.ApplyFriendHandler;
-import cn.edu.hfut.backend.socket.handler.impl.GroupMessageHandler;
-import cn.edu.hfut.backend.socket.handler.impl.MarkReadMessageHandler;
-import cn.edu.hfut.backend.socket.handler.impl.PrivateMessageHandler;
+import cn.edu.hfut.backend.socket.handler.impl.*;
 import cn.edu.hfut.backend.util.JsonUtil;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import lombok.extern.slf4j.Slf4j;
@@ -54,12 +51,14 @@ public class ChatSocket {
         SocketMessageHandler socketMessageHandler = null;
         if (SocketMessageType.PRIVATE_MESSAGE.equals(messageType)) {
             socketMessageHandler = new PrivateMessageHandler();
-        } else if (SocketMessageType.MARK_READ_MESSAGE.equals(messageType)) {
-            socketMessageHandler = new MarkReadMessageHandler();
+        } else if (SocketMessageType.MARK_PRIVATE_MESSAGE_READ.equals(messageType)) {
+            socketMessageHandler = new MarkPrivateMessageReadHandler();
         } else if (SocketMessageType.FRIEND_APPLY.equals(messageType)) {
             socketMessageHandler = new ApplyFriendHandler();
         } else if (SocketMessageType.GROUP_MESSAGE.equals(messageType)) {
             socketMessageHandler = new GroupMessageHandler();
+        } else if (SocketMessageType.MARK_GROUP_MESSAGE_READ.equals(messageType)) {
+            socketMessageHandler = new MarkGroupMessageReadHandler();
         } else {
             // 忽略不支持的事件类型
             return;
