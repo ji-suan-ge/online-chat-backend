@@ -33,7 +33,7 @@ public class GroupController {
             return ResultUtil.error(UserResponseCode.NOT_LOGIN, "请先登录！");
         }
         Integer userId = user.getId();
-        List<Group> groupList = groupService.getAllGroup(userId);
+        List<GetAllGroupRespBean.GroupAndMessageTime> groupList = groupService.getAllGroup(userId);
 
         GetAllGroupRespBean getAllGroupRespBean = new GetAllGroupRespBean(groupList);
         return ResultUtil.success(getAllGroupRespBean);

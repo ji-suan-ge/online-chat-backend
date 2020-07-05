@@ -1,8 +1,10 @@
 package cn.edu.hfut.backend.dao;
 
+import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.Message;
 import org.apache.ibatis.annotations.*;
 
+import java.sql.Timestamp;
 import java.util.List;
 
 @Mapper
@@ -13,6 +15,9 @@ public interface MessageMapper {
 
     @Select("SELECT * from message WHERE (userId = #{userId} and groupId = #{groupId} and type = 2)")
     List<Message> selectGroupMessage(Integer userId, Integer groupId);
+
+    @Select("select  * from `message` WHERE groupId = #{groupId} Order By message.time  Desc LIMIT 1 " )
+    Message getLastMessageTime(Integer groupId);
 
     @Insert("INSERT INTO " +
             "message(userId,friendId,groupId,type,content,time, state) " +
