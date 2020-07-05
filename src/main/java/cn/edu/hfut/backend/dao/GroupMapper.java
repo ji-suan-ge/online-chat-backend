@@ -25,7 +25,7 @@ public interface GroupMapper {
             "WHERE groupId = #{groupId} and userId = #{userId}")
     void updateLastReadMessageId(Integer userId, Integer groupId, Integer messageId);
 
-    @Select("select user.ID,user.nickname,user.avatar from user where user.ID in (" +
+    @Select("select * from user where user.ID in (" +
             "select userId from groupuser where groupuser.groupId = #{groupId})")
     List<GroupUserList> getGroupUserList(Integer groupId);
 
