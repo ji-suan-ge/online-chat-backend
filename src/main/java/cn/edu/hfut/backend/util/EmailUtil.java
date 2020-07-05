@@ -8,31 +8,25 @@ import java.util.Date;
 import java.util.Properties;
 
 public class EmailUtil {
-    public static final String HOST = "smtp.163.com";
+    public static final String HOST = "smtp.ym.163.com";
     public static final String PROTOCOL = "smtp";
     public static final int PORT = 25;
-    public static final String FROM = "byxuewen@163.com";//发件人的email
-    public static final String PWD = "gxwgxw123123";//发件人密码(授权密码)
+    public static final String FROM = "online-chat@xuewen.me";
+    public static final String PWD = "online-chat";
 
-    /**
-     * 获取Session
-     *
-     * @return
-     */
     private static Session getSession() {
         Properties props = new Properties();
-        props.put("mail.smtp.host", HOST);//设置服务器地址
-        props.put("mail.store.protocol", PROTOCOL);//设置协议
-        props.put("mail.smtp.port", PORT);//设置端口
-        props.put("mail.smtp.auth", "true");//身份认证
+        props.put("mail.smtp.host", HOST);
+        props.put("mail.store.protocol", PROTOCOL);
+        props.put("mail.smtp.port", PORT);
+        props.put("mail.smtp.auth", "true");
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
                 return new PasswordAuthentication(FROM, PWD);
             }
         };
-        Session session = Session.getDefaultInstance(props, authenticator);
-        return session;
+        return Session.getDefaultInstance(props, authenticator);
     }
 
     public static void send(String toEmail, String subject, String content) {
