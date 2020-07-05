@@ -4,6 +4,7 @@ import cn.edu.hfut.backend.dao.FriendMapper;
 import cn.edu.hfut.backend.dao.GroupMapper;
 import cn.edu.hfut.backend.dao.MessageMapper;
 import cn.edu.hfut.backend.dto.friend.GetPulledMessageRespBean;
+import cn.edu.hfut.backend.dto.group.GetGroupMessageRespBean;
 import cn.edu.hfut.backend.entity.FriendRequest;
 import cn.edu.hfut.backend.entity.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,6 +92,22 @@ public class MessageServiceImpl implements MessageService {
     public FriendRequest addFriendRequest(Integer userId, Integer friendId, String content, Timestamp timestamp) {
         friendMapper.addFriendRequest(userId, friendId, content, timestamp);
         return friendMapper.getRequest(friendMapper.getNewID());
+    }
+
+    @Override
+    public List<GetGroupMessageRespBean.GroupMessage> getAllGroupMessage(Integer userId) {
+        List<GetGroupMessageRespBean.GroupMessage> groupMessageList =
+                new ArrayList<>();
+        List<Integer> groupIdList = groupMapper.getAllGroupId(userId);
+        groupIdList.forEach(groupId -> {
+            GetGroupMessageRespBean.GroupMessage groupMessage =
+                    new GetGroupMessageRespBean.GroupMessage();
+            groupMessage.setGroupId(groupId);
+            List<Message> messageList = messageMapper.selectGroupMessage(userId, groupId);
+            groupMessage.setMessageList(messageList);
+            groupMessageList.add(groupMessage);
+        });
+        return groupMessageList;
     }
 
 }

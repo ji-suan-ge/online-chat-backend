@@ -46,6 +46,10 @@ public interface GroupMapper {
             "VALUES(#{name},#{account},#{introduction},#{avatar},1)")
     void createGroup(String name, String account, String avatar, String introduction);
 
+    @Select("SELECT ID from `group` where ID IN " +
+            "( SELECT groupId  FROM `groupuser` WHERE userId = #{userId})")
+    List<Integer> getAllGroupId(Integer userId);
+
 
 //    @Select("SELECT groupId from groupuser " +
 //            "where userId = #{userId} ")
