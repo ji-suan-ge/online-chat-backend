@@ -13,7 +13,7 @@ public interface GroupService {
 
     void addGroup(Integer userId, Integer groupId, Timestamp now);
 
-    List<GroupUserList> getGroupUserList(Integer groupId);
+    List<User> getGroupUserList(Integer groupId);
 
     List<Group> getGroupByAccount(Integer groupAccount);
 

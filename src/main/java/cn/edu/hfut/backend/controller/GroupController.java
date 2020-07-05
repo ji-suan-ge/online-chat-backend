@@ -83,7 +83,7 @@ public class GroupController {
     @PostMapping("getGroupUserList")
     public Response getGroupUserList(@RequestBody @Valid GetGroupUserListReqBean getGroupUserListReqBean) {
         Integer groupId = getGroupUserListReqBean.getGroupId();
-        List<GroupUserList> groupUserList = groupService.getGroupUserList(groupId);
+        List<User> groupUserList = groupService.getGroupUserList(groupId);
         GetGroupUserListRespBean getGroupUserListRespBean = new GetGroupUserListRespBean(groupUserList);
         return ResultUtil.success(getGroupUserListRespBean);
     }
