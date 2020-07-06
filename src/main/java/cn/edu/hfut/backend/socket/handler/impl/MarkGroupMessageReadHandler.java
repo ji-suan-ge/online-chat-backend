@@ -1,6 +1,5 @@
 package cn.edu.hfut.backend.socket.handler.impl;
 
-import cn.edu.hfut.backend.dto.socket.MarkGroupMessageRead;
 import cn.edu.hfut.backend.service.GroupService;
 import cn.edu.hfut.backend.socket.ChatSocket;
 import cn.edu.hfut.backend.socket.handler.SocketMessageHandler;
@@ -20,9 +19,8 @@ public class MarkGroupMessageReadHandler implements SocketMessageHandler {
 
     @Override
     public void handle(ChatSocket chatSocket, String data) throws JsonProcessingException {
-        MarkGroupMessageRead markGroupMessageRead = JsonUtil.parse(data, MarkGroupMessageRead.class);
-        Integer groupId = markGroupMessageRead.getGroupId();
-        Integer messageId = markGroupMessageRead.getMessageId();
-        groupService.updateLastReadMessageId(chatSocket.getUserId(), groupId, messageId);
+        Integer groupId = JsonUtil.parse(data, Integer.class);
+        Integer messageId = groupService.getLastMessageId(groupId, chatSocket.getUserId());
+        groupService.updateLastReadMessageId(groupId, chatSocket.getUserId(), messageId);
     }
 }

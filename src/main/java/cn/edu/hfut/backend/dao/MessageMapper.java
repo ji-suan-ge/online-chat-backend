@@ -19,6 +19,13 @@ public interface MessageMapper {
     @Select("select  * from `message` WHERE groupId = #{groupId} Order By message.time  Desc LIMIT 1 " )
     Message getLastMessageTime(Integer groupId);
 
+    @Select("SELECT  * " +
+            "FROM `message` " +
+            "WHERE groupId = #{groupId} " +
+            "ORDER BY `time` DESC " +
+            "LIMIT 1")
+    Integer getLastMessageId(Integer groupId, Integer userId);
+
     @Insert("INSERT INTO " +
             "message(userId,friendId,groupId,type,content,time, state) " +
             "VALUES(#{userId},#{friendId},#{groupId},#{type},#{content},#{time}, #{state})")

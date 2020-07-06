@@ -23,7 +23,7 @@ public interface GroupMapper {
     @Update("UPDATE groupuser " +
             "SET lastMessageId = #{messageId} " +
             "WHERE groupId = #{groupId} and userId = #{userId}")
-    void updateLastReadMessageId(Integer userId, Integer groupId, Integer messageId);
+    void updateLastReadMessageId(Integer groupId, Integer userId, Integer messageId);
 
     @Select("select * from user where user.ID in (" +
             "select userId from groupuser where groupuser.groupId = #{groupId})")

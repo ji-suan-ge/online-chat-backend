@@ -96,8 +96,8 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public void updateLastReadMessageId(Integer userId, Integer groupId, Integer messageId) {
-        groupMapper.updateLastReadMessageId(userId, groupId, messageId);
+    public void updateLastReadMessageId(Integer groupId, Integer userId, Integer messageId) {
+        groupMapper.updateLastReadMessageId(groupId, userId, messageId);
     }
 
     @Override
@@ -108,5 +108,10 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<User> getUserList(Integer groupId) {
         return groupMapper.getUserList(groupId);
+    }
+
+    @Override
+    public Integer getLastMessageId(Integer groupId, Integer userId) {
+        return messageMapper.getLastMessageId(groupId, userId);
     }
 }
