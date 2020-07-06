@@ -10,7 +10,7 @@ import java.util.Properties;
 public class EmailUtil {
     public static final String HOST = "smtp.ym.163.com";
     public static final String PROTOCOL = "smtp";
-    public static final int PORT = 25;
+    public static final int PORT = 994;
     public static final String FROM = "online-chat@xuewen.me";
     public static final String PWD = "online-chat";
 
@@ -20,6 +20,7 @@ public class EmailUtil {
         props.put("mail.store.protocol", PROTOCOL);
         props.put("mail.smtp.port", PORT);
         props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.ssl.enable", "true");
         Authenticator authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
