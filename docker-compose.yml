@@ -13,3 +13,5 @@ services:
       - my-bridge
     ports:
       - 8002:8002
+    volumes:
+      - /var/docker-volume/online-chat-backend/upload-files:/root/upload-files
