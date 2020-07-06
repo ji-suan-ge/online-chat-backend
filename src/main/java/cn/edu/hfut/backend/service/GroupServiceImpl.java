@@ -2,10 +2,8 @@ package cn.edu.hfut.backend.service;
 
 import cn.edu.hfut.backend.dao.GroupMapper;
 import cn.edu.hfut.backend.dao.MessageMapper;
-import cn.edu.hfut.backend.dto.friend.GetPulledMessageRespBean;
 import cn.edu.hfut.backend.dto.group.GetAllGroupRespBean;
 import cn.edu.hfut.backend.entity.Group;
-import cn.edu.hfut.backend.entity.GroupUserList;
 import cn.edu.hfut.backend.entity.Message;
 import cn.edu.hfut.backend.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +27,7 @@ public class GroupServiceImpl implements GroupService {
     @Override
     public List<GetAllGroupRespBean.GroupAndMessageTime> getAllGroup(Integer userId) {
         List<GetAllGroupRespBean.GroupAndMessageTime> groupAndMessageTimeList =
-                new ArrayList<>();;
+                new ArrayList<>();
         List<Group> groupList = groupMapper.getAllGroup(userId);
         groupList.forEach(group -> {
             GetAllGroupRespBean.GroupAndMessageTime newGroup = new GetAllGroupRespBean.GroupAndMessageTime();
@@ -44,6 +42,13 @@ public class GroupServiceImpl implements GroupService {
             if (message != null)
                 lastMessageTime = message.getTime();
             newGroup.setLastMessageTime(lastMessageTime);
+            Integer lastReadMessageId = messageMapper.getLastReadGroupMessageId(newGroup.getId(), userId);
+            System.out.println(lastReadMessageId);
+            if (lastReadMessageId == null) {
+                lastReadMessageId = 0;
+            }
+            Integer newMessageNumber = messageMapper.getNewGroupMessageNumber(newGroup.getId(), lastReadMessageId);
+            newGroup.setNewMessageNumber(newMessageNumber);
             groupAndMessageTimeList.add(newGroup);
         });
         return groupAndMessageTimeList;

@@ -58,4 +58,14 @@ public interface MessageMapper {
             "and friendId = #{userId} " +
             "and type = 1 and state = 1")
     void readAllPrivateMessage(Integer userId, Integer friendId);
+
+    @Select("SELECT COUNT(*) " +
+            "FROM `message` " +
+            "WHERE `groupId` = #{groupId} AND `id` > #{lastMessageId}")
+    Integer getNewGroupMessageNumber(Integer groupId, Integer lastMessageId);
+
+    @Select("SELECT lastMessageId " +
+            "FROM `groupuser` " +
+            "WHERE `groupId` = #{groupId} AND `userId` = #{userId}")
+    Integer getLastReadGroupMessageId(Integer groupId, Integer userId);
 }

@@ -24,6 +24,7 @@ public class GetAllGroupRespBean {
         private String avatar;
         private Integer state;
         private Timestamp lastMessageTime;
+        private Integer newMessageNumber;
     }
 
 }
