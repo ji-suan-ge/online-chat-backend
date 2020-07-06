@@ -2,7 +2,10 @@ package cn.edu.hfut.backend.controller;
 
 import cn.edu.hfut.backend.constant.code.UserResponseCode;
 import cn.edu.hfut.backend.dto.group.*;
-import cn.edu.hfut.backend.entity.*;
+import cn.edu.hfut.backend.entity.Group;
+import cn.edu.hfut.backend.entity.GroupAllUserList;
+import cn.edu.hfut.backend.entity.Response;
+import cn.edu.hfut.backend.entity.User;
 import cn.edu.hfut.backend.service.GroupService;
 import cn.edu.hfut.backend.util.ResultUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +104,7 @@ public class GroupController {
         Integer userId = getAllGroupUserReqBean.getUserId();
         List<Integer> groupIdList = groupService.getAllGroupNum(userId);
         List<GroupAllUserList> allGroupUserList = new ArrayList<>();
-        for(Integer groupId : groupIdList) {
+        for (Integer groupId : groupIdList) {
             GroupAllUserList allUserList = new GroupAllUserList();
             List<User> userList = groupService.getUserList(groupId);
             allUserList.setGroupId(groupId);

@@ -1,6 +1,5 @@
 package cn.edu.hfut.backend.dto.group;
 
-import cn.edu.hfut.backend.entity.Group;
 import cn.edu.hfut.backend.entity.GroupAllUserList;
 import lombok.AllArgsConstructor;
 import lombok.Data;

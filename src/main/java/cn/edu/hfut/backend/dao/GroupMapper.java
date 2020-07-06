@@ -2,7 +2,6 @@ package cn.edu.hfut.backend.dao;
 
 import cn.edu.hfut.backend.dao.provider.GroupProvider;
 import cn.edu.hfut.backend.entity.Group;
-import cn.edu.hfut.backend.entity.GroupUserList;
 import cn.edu.hfut.backend.entity.User;
 import org.apache.ibatis.annotations.*;
 

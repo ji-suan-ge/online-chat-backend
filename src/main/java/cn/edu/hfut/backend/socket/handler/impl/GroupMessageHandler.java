@@ -4,7 +4,6 @@ import cn.edu.hfut.backend.constant.message.MessageType;
 import cn.edu.hfut.backend.constant.socket.SocketMessageType;
 import cn.edu.hfut.backend.dto.socket.ChatMessage;
 import cn.edu.hfut.backend.dto.socket.SocketMessage;
-import cn.edu.hfut.backend.entity.GroupUserList;
 import cn.edu.hfut.backend.entity.Message;
 import cn.edu.hfut.backend.entity.User;
 import cn.edu.hfut.backend.service.GroupService;
